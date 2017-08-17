@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Hamburguesas Berlin</string>
+    <string name="facebook_app_id">1933844770223948</string>
+    <string name="title_activity_menu">Berlin</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

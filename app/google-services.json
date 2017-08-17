@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "680200971634",
+    "firebase_url": "https://hamburguesas-berlin.firebaseio.com",
+    "project_id": "hamburguesas-berlin",
+    "storage_bucket": "hamburguesas-berlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680200971634:android:ced5505340851853",
+        "android_client_info": {
+          "package_name": "com.berlin.hamburguesasberlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680200971634-appdtsjg47gjk9sb7cd0ruj0fcnovrg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.berlin.hamburguesasberlin",
+            "certificate_hash": "7a43a2be58d7c23dca25505a6238dca1349e6ee2"
+          }
+        },
+        {
+          "client_id": "680200971634-2pt63hefpsir0bvi2ojkekqihsacah7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsTkUfglL1-ZIgjMh5PVJZEJv51-sNG10"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680200971634-2pt63hefpsir0bvi2ojkekqihsacah7c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
