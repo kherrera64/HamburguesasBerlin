@@ -21,25 +21,27 @@
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
-
+                android:layout_marginBottom="10dp"
                 />
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/singInGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
+                android:layout_marginBottom="10dp"
                 />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Iniciar Sesión"/>
             <Button
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Registrarse"/>

@@ -35,6 +35,8 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
 
         callbackManager = CallbackManager.Factory.create();
         login_button = (LoginButton) findViewById(R.id.login_button);
+
+        
         login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -62,6 +64,9 @@ public class LogInActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         singInButton = (SignInButton) findViewById(R.id.singInGoogle);
+
+        singInButton.setSize(SignInButton.SIZE_WIDE);
+
         singInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
