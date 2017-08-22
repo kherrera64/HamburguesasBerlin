@@ -1,5 +1,6 @@
 package com.berlin.hamburguesasberlin;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -31,11 +33,17 @@ public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
+    private OrdenFragment f1;
+    private FragmentTransaction ft;
+    private FrameLayout fl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        fl = (FrameLayout) findViewById(R.id.frame_layout);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -132,15 +140,20 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.ordenar) {
 
-        } else if (id == R.id.nav_slideshow) {
+            fl.removeAllViews();
+            ft = getFragmentManager().beginTransaction();
+            f1 = new OrdenFragment();
+            ft.replace(R.id.frame_layout, f1);
+            ft.commit();
 
-        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.maps) {
+
+        } else if (id == R.id.historial) {
+
+        } else if (id == R.id.direcciones) {
 
         } else if (id == R.id.cerrarSesion) {
 

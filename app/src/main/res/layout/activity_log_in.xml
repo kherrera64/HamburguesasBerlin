@@ -16,13 +16,12 @@
         android:orientation="vertical">
 
 
-
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:textSize="16sp" />
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/singInGoogle"
                 android:layout_width="match_parent"
