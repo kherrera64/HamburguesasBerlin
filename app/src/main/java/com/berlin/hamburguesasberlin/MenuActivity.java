@@ -1,6 +1,6 @@
 package com.berlin.hamburguesasberlin;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -143,7 +143,7 @@ public class MenuActivity extends AppCompatActivity
         if (id == R.id.ordenar) {
 
             fl.removeAllViews();
-            ft = getFragmentManager().beginTransaction();
+            ft = getSupportFragmentManager().beginTransaction();
             f1 = new OrdenFragment();
             ft.replace(R.id.frame_layout, f1);
             ft.commit();
