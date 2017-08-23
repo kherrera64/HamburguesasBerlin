@@ -142,11 +142,15 @@ public class MenuActivity extends AppCompatActivity
 
         if (id == R.id.ordenar) {
 
-            fl.removeAllViews();
-            ft = getSupportFragmentManager().beginTransaction();
-            f1 = new OrdenFragment();
-            ft.replace(R.id.frame_layout, f1);
-            ft.commit();
+            Intent  intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            this.startActivity(intent);
+
+//            fl.removeAllViews();
+//            ft = getSupportFragmentManager().beginTransaction();
+//            f1 = new OrdenFragment();
+//            ft.replace(R.id.frame_layout, f1);
+//            ft.commit();
 
 
         } else if (id == R.id.maps) {
