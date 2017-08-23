@@ -1,6 +1,7 @@
 package com.berlin.hamburguesasberlin;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,72 +23,91 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class OrdenFragment extends Fragment {
 
     private AppBarLayout appBar;
-    private TabLayout tabs;
+    private TabLayout pestanas;
     private ViewPager viewPager;
+
+    public OrdenFragment() {
+    }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstancestate)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
     {
-        View v;
-        v = inflater.inflate(R.layout.fragment_orden, container, false);
+        View view = inflater.inflate(R.layout.fragmento_paginado, container, false);
 
-//        View contenedor = (View)container.getParent();
-//        appBar = (AppBarLayout)contenedor.findViewById(R.id.appbar);
-//        tabs = new TabLayout(getActivity());
-//        appBar.addView(tabs);
-//
-//        viewPager = (ViewPager)v.findViewById(R.id.container);
-//        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getFragmentManager());
-//        viewPager.setAdapter(pagerAdapter);
-//        tabs.setupWithViewPager(viewPager);
+        if (savedInstanceState == null) {
+            insertarTabs(container);
 
-        return  v;
+            // Setear adaptador al viewpager.
+            viewPager = (ViewPager) view.findViewById(R.id.pager);
+            poblarViewPager(viewPager);
+            pestanas.setupWithViewPager(viewPager);
+        }
+
+        return view;
+    }
+
+    private void insertarTabs(ViewGroup container) {
+        View padre = (View) container.getParent();
+        appBar = (AppBarLayout) padre.findViewById(R.id.appbar);
+        pestanas = new TabLayout(getActivity());
+        pestanas.setTabTextColors(Color.parseColor("#FFFFFF"), Color.parseColor("#FFFFFF"));
+        appBar.addView(pestanas);
+    }
+
+    private void poblarViewPager(ViewPager viewPager) {
+        AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
+        adapter.addFragment(new productoFragment(), "Hamburguesas");
+        adapter.addFragment(new productoFragment(), "Pollo");
+        adapter.addFragment(new productoFragment(), "Postres");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        appBar.removeView(tabs);
+        appBar.removeView(pestanas);
     }
 
-    public class ViewPagerAdapter extends FragmentStatePagerAdapter{
+    /**
+     * Un {@link FragmentStatePagerAdapter} que gestiona las secciones, fragmentos y
+     * títulos de las pestañas
+     */
+    public class AdaptadorSecciones extends FragmentStatePagerAdapter {
+        private final List<Fragment> fragmentos = new ArrayList<>();
+        private final List<String> titulosFragmentos = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager fragmentManager) {
-
-            super(fragmentManager);
+        public AdaptadorSecciones(FragmentManager fm) {
+            super(fm);
         }
 
-        String[] titulosTabs = {"HAMBURGUESAS", "POLLO", "POSTRES"};
-
         @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new productoFragment();
-                case 1:
-                    return new productoFragment();
-                case 2:
-                    return new productoFragment();
-            }
-            return null;
+        public android.support.v4.app.Fragment getItem(int position) {
+            return fragmentos.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return fragmentos.size();
+        }
+
+        public void addFragment(android.support.v4.app.Fragment fragment, String title) {
+            fragmentos.add(fragment);
+            titulosFragmentos.add(title);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-           return titulosTabs[position];
+            return titulosFragmentos.get(position);
         }
-
     }
 
 }

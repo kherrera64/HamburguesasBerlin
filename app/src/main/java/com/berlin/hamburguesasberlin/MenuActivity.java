@@ -1,5 +1,7 @@
 package com.berlin.hamburguesasberlin;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,8 +35,8 @@ public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
-    private OrdenFragment f1;
-    private FragmentTransaction ft;
+//    private OrdenFragment f1;
+//    private FragmentTransaction ft;
     private FrameLayout fl;
 
 
@@ -43,7 +45,7 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        fl = (FrameLayout) findViewById(R.id.frame_layout);
+        //fl = (FrameLayout) findViewById(R.id.frame_layout);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -140,11 +142,18 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragmentoGenerico = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+
         if (id == R.id.ordenar) {
 
-            Intent  intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.startActivity(intent);
+            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new OrdenFragment()).commit();
+
+//            Intent  intent = new Intent(this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            this.startActivity(intent);
+
 
 //            fl.removeAllViews();
 //            ft = getSupportFragmentManager().beginTransaction();
@@ -154,10 +163,15 @@ public class MenuActivity extends AppCompatActivity
 
 
         } else if (id == R.id.maps) {
+            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new mapsFragment()).commit();
 
         } else if (id == R.id.historial) {
 
+            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new historialFragment()).commit();
+
         } else if (id == R.id.direcciones) {
+
+            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new direccionesFragment()).commit();
 
         } else if (id == R.id.cerrarSesion) {
 
@@ -175,8 +189,6 @@ public class MenuActivity extends AppCompatActivity
                     }
                 }
             });
-
-//            LoginManager.getInstance().logOut();
 
 
         }
