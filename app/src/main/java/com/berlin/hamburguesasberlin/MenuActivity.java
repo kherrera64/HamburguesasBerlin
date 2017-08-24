@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,19 +32,27 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-public class MenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+public class MenuActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
-//    private OrdenFragment f1;
-//    private FragmentTransaction ft;
-    private FrameLayout fl;
-
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.actividad_principal);
+
+        agregarToolbar();
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        if (navigationView != null) {
+            prepararDrawer(navigationView);
+            // Seleccionar item por defecto
+            seleccionarItem(navigationView.getMenu().getItem(0));
+        }
 
         //fl = (FrameLayout) findViewById(R.id.frame_layout);
 
@@ -73,27 +82,98 @@ public class MenuActivity extends AppCompatActivity
             });
         }
 
+    }
 
+    private void agregarToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            // Poner ícono del drawer toggle
+            ab.setHomeAsUpIndicator(R.mipmap.drawer_toggle);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+    private void prepararDrawer(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        seleccionarItem(menuItem);
+                        drawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void seleccionarItem(MenuItem itemDrawer) {
+        Fragment fragmentoGenerico = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        switch (itemDrawer.getItemId()) {
+            case R.id.item_inicio:
+                fragmentoGenerico = new inicioFragment();
+                break;
+            case R.id.item_ordenar:
+                fragmentoGenerico = new OrdenFragment();
+                break;
+            case R.id.item_maps:
+                fragmentoGenerico = new mapsFragment();
+                break;
+            case R.id.item_direcciones:
+                fragmentoGenerico = new direccionesFragment();
+                break;
+            case R.id.item_historial:
+                fragmentoGenerico = new historialFragment();
+                break;
+            case R.id.cerrar_sesion:
+
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if(status.isSuccess())
+                        {
+                            LoginManager.getInstance().logOut();
+                            goLogInScreen();
+                        }
+                        else {
+                            LoginManager.getInstance().logOut();
+                            Toast.makeText(getApplicationContext(), "No se puede cerrar sesión.", Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+
+                break;
+        }
+        if (fragmentoGenerico != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.contenedor_principal, fragmentoGenerico)
+                    .commit();
+        }
+
+        // Setear título actual
+        setTitle(itemDrawer.getTitle());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actividad_principal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void handleSignInResult(GoogleSignInResult googleSignInResult) {
@@ -104,99 +184,6 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        Fragment fragmentoGenerico = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-
-        if (id == R.id.ordenar) {
-
-            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new OrdenFragment()).commit();
-
-//            Intent  intent = new Intent(this, MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            this.startActivity(intent);
-
-
-//            fl.removeAllViews();
-//            ft = getSupportFragmentManager().beginTransaction();
-//            f1 = new OrdenFragment();
-//            ft.replace(R.id.frame_layout, f1);
-//            ft.commit();
-
-
-        } else if (id == R.id.maps) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new mapsFragment()).commit();
-
-        } else if (id == R.id.historial) {
-
-            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new historialFragment()).commit();
-
-        } else if (id == R.id.direcciones) {
-
-            fragmentManager.beginTransaction().replace(R.id.contenedor_principal, new direccionesFragment()).commit();
-
-        } else if (id == R.id.cerrarSesion) {
-
-            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-                @Override
-                public void onResult(@NonNull Status status) {
-                    if(status.isSuccess())
-                    {
-                        LoginManager.getInstance().logOut();
-                        goLogInScreen();
-                    }
-                    else {
-                        LoginManager.getInstance().logOut();
-                        Toast.makeText(getApplicationContext(), "No se puede cerrar sesión.", Toast.LENGTH_SHORT);
-                    }
-                }
-            });
-
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     private void goLogInScreen() {
         Intent intent = new Intent(this, LogInActivity.class);

@@ -1,23 +1,28 @@
 package com.berlin.hamburguesasberlin;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class mapsFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class inicioFragment extends Fragment {
 
-    public mapsFragment() {
+
+    public inicioFragment() {
+        // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        return inflater.inflate(R.layout.fragment_inicio, container, false);
     }
 
 }
