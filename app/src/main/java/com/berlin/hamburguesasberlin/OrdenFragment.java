@@ -65,9 +65,9 @@ public class OrdenFragment extends Fragment {
 
     private void poblarViewPager(ViewPager viewPager) {
         AdaptadorSecciones adapter = new AdaptadorSecciones(getFragmentManager());
-        adapter.addFragment(new mapsFragment(), "Hamburguesas");
-        adapter.addFragment(new mapsFragment(), "Pollo");
-        adapter.addFragment(new mapsFragment(), "Postres");
+        adapter.addFragment(new productoFragment(), "Hamburguesas");
+        adapter.addFragment(new productoFragment(), "Pollo");
+        adapter.addFragment(new productoFragment(), "Postres");
         viewPager.setAdapter(adapter);
     }
 
